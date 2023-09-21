@@ -1,11 +1,9 @@
 package beginner;
 
-
 import com.sandwich.koan.Koan;
 
 import static com.sandwich.koan.constant.KoanConstants.__;
 import static com.sandwich.util.Assert.assertEquals;
-
 
 public class AboutConditionals {
 
@@ -15,7 +13,7 @@ public class AboutConditionals {
         if (true) {
             x++;
         }
-        assertEquals(x, __);
+        assertEquals(x, 2);
     }
 
     @Koan
@@ -27,7 +25,7 @@ public class AboutConditionals {
         } else {
             x--;
         }
-        assertEquals(x, __);
+        assertEquals(x, 0);
     }
 
     @Koan
@@ -42,7 +40,7 @@ public class AboutConditionals {
         } else {
             x--;
         }
-        assertEquals(x, __);
+        assertEquals(x, 10);
     }
 
     @Koan
@@ -53,12 +51,13 @@ public class AboutConditionals {
         // Curly braces after an "if" or "else" are not required...
         if (secretBoolean)
             x++;
-            if (otherBooleanCondition)
-                x = 10;
+        if (otherBooleanCondition)
+            x = 10;
         else
             x--;
         // ...but they are recommended.
-        assertEquals(x, __);
+        // oh thats terribly unclear without braces
+        assertEquals(x, 10);
     }
 
     @Koan
@@ -76,7 +75,7 @@ public class AboutConditionals {
         } else {
             x--;
         }
-        assertEquals(x, __);
+        assertEquals(x, 0);
     }
 
     @Koan
@@ -93,7 +92,7 @@ public class AboutConditionals {
             default:
                 result += "Nothing";
         }
-        assertEquals(result, __);
+        assertEquals(result, "Basic One");
     }
 
     @Koan
@@ -108,7 +107,7 @@ public class AboutConditionals {
             default:
                 result += "Nothing";
         }
-        assertEquals(result, __);
+        assertEquals(result, "Basic OneTwoNothing"); // there is nothing to break
     }
 
     @Koan
@@ -123,7 +122,7 @@ public class AboutConditionals {
             case 2:
                 result += "Two";
         }
-        assertEquals(result, __);
+        assertEquals(result, "Basic NothingTwo"); // doesn't hit case one -- order is important if you want fallthrough
     }
 
     @Koan
@@ -131,16 +130,18 @@ public class AboutConditionals {
         int i = 5;
         // What happens if you remove the 'final' modifier?
         // What does this mean for case values?
-        final int caseOne = 1;
+        final int caseOne = 1; // final makes constants (vars), prevents overriding (methods) or inheritance
+                               // (classes)
         String result = "Basic ";
         switch (i) {
-            case caseOne:
+            case caseOne: // expression required if no final keyword?
+                // caseOne is 1, so i doesn't hit it
                 result += "One";
                 break;
             default:
                 result += "Nothing";
         }
-        assertEquals(result, __);
+        assertEquals(result, "Basic Nothing");
     }
 
     @Koan
@@ -148,7 +149,8 @@ public class AboutConditionals {
         // Try different (primitive) types for 'c'
         // Which types do compile?
         // Does boxing work?
-        char c = 'a';
+        char c = 'a'; // primitive type = char, object type is new Character() -- boxing and unboxing
+                        // is going from primitive to user-defined object
         String result = "Basic ";
         switch (c) {
             case 'a':
@@ -157,7 +159,7 @@ public class AboutConditionals {
             default:
                 result += "Nothing";
         }
-        assertEquals(result, __);
+        assertEquals(result, "Basic One");
     }
 
     @Koan
@@ -165,33 +167,35 @@ public class AboutConditionals {
         Counter trueCount = new Counter(true);
         Counter falseCount = new Counter(false);
         String x = "Hai";
-        if (trueCount.count() || falseCount.count()) {
+        if (trueCount.count() || falseCount.count()) { //OR statements find the first truthy, so falseCount would not be run
             x = "kthxbai";
         }
-        assertEquals(x, __);
-        assertEquals(trueCount.count, __);
-        assertEquals(falseCount.count, __);
+        assertEquals(x, "kthxbai");
+        assertEquals(trueCount.count, 1);
+        assertEquals(falseCount.count, 0);
     }
-    
+
     @Koan
     public void bitwise() {
         Counter trueCount = new Counter(true);
         Counter falseCount = new Counter(false);
         String x = "Hai";
-        if (trueCount.count() | falseCount.count()) {
+        if (trueCount.count() | falseCount.count()) { //interesting! bitwise OR runs both, I think because it needs to evaluate the bits to compare
             x = "kthxbai";
         }
-        assertEquals(x, __);
-        assertEquals(trueCount.count, __);
-        assertEquals(falseCount.count, __);
+        assertEquals(x, "kthxbai");
+        assertEquals(trueCount.count, 1);
+        assertEquals(falseCount.count, 1);
     }
-    
+
     class Counter {
         boolean returnValue;
         int count = 0;
-        Counter(boolean returnValue) { 
+
+        Counter(boolean returnValue) {
             this.returnValue = returnValue;
         }
+
         boolean count() {
             count++;
             return returnValue;
