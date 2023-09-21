@@ -1,6 +1,6 @@
 # Java Koans 
 
-[![Build Status](https://travis-ci.org/matyb/java-koans.png?branch=master)](https://travis-ci.org/matyb/java-koans)
+Solutions to koans [here.](https://github.com/matyb/java-koans)
 
 Running Instructions:
 =====================
@@ -15,13 +15,3 @@ https://github.com/matyb/java-koans/archive/master.zip
 * Change directory to the koans directory: ```cd koans```
 * If you are using windows enter: ```run.bat``` or ```./run.sh``` if you are using Mac or Linux
 
-Developing a Koan:
-==================
-* Follow any of the existing koans as an example to create a new class with koan methods (indicated by the @Koan annotation, they're public and specify no arguments)
-* Define the order the koan suite (if it's new) will run in the koans/app/config/PathToEnlightenment.xml file
-* [Override the lesson text](https://github.com/matyb/java-koans/blob/master/koans/app/config/i18n/messages_en.properties#L1) when it fails (default is expected 'X' found 'Y')
-* Optionally you may use dynamic content in your lesson, examples are located in the XmlVariableInjector class (and Test) and the AboutKoans.java file
-
-Something's wrong:
-==================
-* If the koans app is constantly timing out compiling a koan, your computer may be too slow to compile the koan classes with the default timeout value. Update the compile_timeout_in_ms property in koans/app/config/config.properties with a larger value and try again.
