@@ -13,7 +13,7 @@ public class AboutObjects {
 
     @Koan
     public void newObjectInstancesCanBeCreatedDirectly() {
-        assertEquals(new Object() instanceof Object, __);
+        assertEquals(new Object() instanceof Object, true);
     }
 
     @Koan
@@ -22,34 +22,38 @@ public class AboutObjects {
         }
 
         Class<?>[] ancestors = getAncestors(new Foo());
-        assertEquals(ancestors[0], __);
-        assertEquals(ancestors[1], __);
+        assertEquals(ancestors[0], Foo.class);
+        assertEquals(ancestors[1], Object.class);
     }
 
     @Koan
     public void objectToString() {
         Object object = new Object();
         // TODO: Why is it best practice to ALWAYS override toString?
-        String expectedToString = MessageFormat.format("{0}@{1}", Object.class.getName(), Integer.toHexString(object.hashCode()));
-        assertEquals(expectedToString, __); // hint: object.toString()
+        // By overriding the toString( ) method, we are customizing the
+        // string representation of the object rather than just printing the default
+        // implementation.
+        String expectedToString = MessageFormat.format("{0}@{1}", Object.class.getName(),
+                Integer.toHexString(object.hashCode()));
+        assertEquals(expectedToString, object.toString()); // hint: object.toString()
     }
 
     @Koan
     public void toStringConcatenates() {
-        final String string = "ha";
+        final String string = "ha"; // first ha from const
         Object object = new Object() {
             @Override
             public String toString() {
-                return string;
+                return string; // second ha from string implementation
             }
         };
-        assertEquals(string + object, __);
+        assertEquals(string + object, "haha");
     }
 
     @Koan
     public void toStringIsTestedForNullWhenInvokedImplicitly() {
         String string = "string";
-        assertEquals(string + null, __);
+        assertEquals(string + null, "stringnull"); // oo null.toString prints null implicitly?
     }
 
     private Class<?>[] getAncestors(Object object) {
@@ -59,7 +63,7 @@ public class AboutObjects {
             ancestors.add(clazz);
             clazz = clazz.getSuperclass();
         }
-        return ancestors.toArray(new Class[]{});
+        return ancestors.toArray(new Class[] {});
     }
 
 }
