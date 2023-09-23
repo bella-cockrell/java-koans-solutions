@@ -9,6 +9,7 @@ import static com.sandwich.util.Assert.assertEquals;
 
 public class AboutArrays {
 
+    //fyi Java arrays are a fixed size tho -- see ArrayList for adding or removing items to array
     @Koan
     public void arraysDoNotConsiderElementsWhenEvaluatingEquality() {
         // arrays utilize default object equality (A == {1} B == {1}, though A
