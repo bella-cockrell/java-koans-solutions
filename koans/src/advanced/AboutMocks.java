@@ -16,6 +16,11 @@ public class AboutMocks {
         }
     }
 
+    static class WorkingCollaborator implements Collaborator {
+        public void doBusinessStuff() {
+        }
+    };
+
     static class ClassUnderTest {
         Collaborator c;
 
@@ -25,7 +30,8 @@ public class AboutMocks {
             this(new ExplosiveCollaborator());
         }
 
-        public ClassUnderTest(Collaborator c) {
+        public ClassUnderTest(Collaborator c) { // this is here for the purposes of mocking, so we can pass in any
+                                                // collab we want
             this.c = c;
         }
 
@@ -40,7 +46,8 @@ public class AboutMocks {
         // HINT: pass a safe Collaborator implementation to constructor
         // new ClassUnderTest(new Collaborator(){... it should not be the
         // objective of this test to test that collaborator, so replace it
-        new ClassUnderTest().doSomething();
+        WorkingCollaborator collab = new WorkingCollaborator();
+        new ClassUnderTest(collab).doSomething();
     }
 
 }
