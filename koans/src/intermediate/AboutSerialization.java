@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import static com.sandwich.koan.constant.KoanConstants.__;
 import static com.sandwich.util.Assert.assertEquals;
 
-
 public class AboutSerialization {
 
     @Koan
@@ -17,18 +16,18 @@ public class AboutSerialization {
         // serialize
         File file = new File("SerializeFile");
         file.deleteOnExit();
-        ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(file));
-        os.writeObject(s);
-        os.close();
+        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
+        outputStream.writeObject(s);
+        outputStream.close();
 
         // deserialize
-        ObjectInputStream is = null;
+        ObjectInputStream inputStream = null;
         try {
-            is = new ObjectInputStream(new FileInputStream("SerializeFile"));
-            String otherString = (String) is.readObject();
-            assertEquals(otherString, __);
+            inputStream = new ObjectInputStream(new FileInputStream("SerializeFile"));
+            String otherString = (String) inputStream.readObject();
+            assertEquals(otherString, "Hello world");
         } finally {
-            closeStream(is);
+            closeStream(inputStream);
         }
     }
 
@@ -55,7 +54,7 @@ public class AboutSerialization {
         try {
             is = new ObjectInputStream(new FileInputStream("SerializeFile"));
             Starship onTheOtherSide = (Starship) is.readObject();
-            assertEquals(onTheOtherSide.maxWarpSpeed, __);
+            assertEquals(onTheOtherSide.maxWarpSpeed, 9);
         } finally {
             closeStream(is);
         }
@@ -89,7 +88,8 @@ public class AboutSerialization {
     }
 
     @Koan
-    public void customObjectSerializationWithTransientFields() throws FileNotFoundException, IOException, ClassNotFoundException {
+    public void customObjectSerializationWithTransientFields()
+            throws FileNotFoundException, IOException, ClassNotFoundException {
         // Note that this kind of access of fields is not good OO practice.
         // But let's focus on serialization here :)
         Car car = new Car();
@@ -104,7 +104,7 @@ public class AboutSerialization {
         try {
             is = new ObjectInputStream(new FileInputStream("SerializeFile"));
             Car deserializedCar = (Car) is.readObject();
-            assertEquals(deserializedCar.engine.type, __);
+            assertEquals(deserializedCar.engine.type, "diesel");
         } finally {
             closeStream(is);
         }
@@ -129,7 +129,7 @@ public class AboutSerialization {
             marker += "Exception";
         }
         os.close();
-        assertEquals(marker, __);
+        assertEquals(marker, "Start Exception");
     }
 
     @SuppressWarnings("serial")
@@ -161,7 +161,7 @@ public class AboutSerialization {
         try {
             is = new ObjectInputStream(new FileInputStream("SerializeFile"));
             Dog otherDog = (Dog) is.readObject();
-            assertEquals(otherDog.name, __);
+            assertEquals(otherDog.name, "snoopy");
         } finally {
             closeStream(is);
         }
@@ -187,7 +187,8 @@ public class AboutSerialization {
     }
 
     @Koan
-    public void serializeWithInheritanceWhenParentNotSerializable() throws FileNotFoundException, IOException, ClassNotFoundException {
+    public void serializeWithInheritanceWhenParentNotSerializable()
+            throws FileNotFoundException, IOException, ClassNotFoundException {
         MilitaryPlane p = new MilitaryPlane("F22");
 
         ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("SerializeFile"));
@@ -199,11 +200,12 @@ public class AboutSerialization {
             is = new ObjectInputStream(new FileInputStream("SerializeFile"));
             MilitaryPlane otherPlane = (MilitaryPlane) is.readObject();
             // Does this surprise you?
-            assertEquals(otherPlane.name, __);
+            assertEquals(otherPlane.name, null);
 
             // Think about how serialization creates objects...
             // It does not use constructors! But if a parent object is not serializable
-            // it actually uses constructors and if the fields are not in a serializable class...
+            // it actually uses constructors and if the fields are not in a serializable
+            // class...
             // unexpected things - like this - may happen
         } finally {
             closeStream(is);
@@ -221,4 +223,3 @@ public class AboutSerialization {
     }
 
 }
-
