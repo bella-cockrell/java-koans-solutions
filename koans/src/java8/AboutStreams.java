@@ -18,8 +18,8 @@ public class AboutStreams {
 
     @Koan
     public void simpleCount() {
-        long count = places.stream().count();
-        assertEquals(count, __);
+        long count = places.stream().count(); // why long here?
+        assertEquals(count, 6L);
     }
 
     @Koan
@@ -27,7 +27,7 @@ public class AboutStreams {
         long count = places.stream()
                 .filter(s -> s.startsWith("S"))
                 .count();
-        assertEquals(count, __);
+        assertEquals(count, 2L);
     }
 
     @Koan
@@ -35,7 +35,7 @@ public class AboutStreams {
         String longest = places.stream()
                 .max(Comparator.comparing(cityName -> cityName.length()))
                 .get();
-        assertEquals(longest, __);
+        assertEquals(longest, "Ljubljana");
     }
 
     @Koan
@@ -43,21 +43,21 @@ public class AboutStreams {
         String shortest = places.stream()
                 .min(Comparator.comparing(cityName -> cityName.length()))
                 .get();
-        assertEquals(shortest, __);
+        assertEquals(shortest, "Zagreb");
     }
 
     @Koan
     public void reduce() {
         String join = places.stream()
                 .reduce("", String::concat);
-        assertEquals(join, __);
+        assertEquals(join, "BelgradeZagrebSarajevoSkopjeLjubljanaPodgorica");
     }
 
     @Koan
     public void reduceWithoutStarterReturnsOptional() {
         Optional<String> join = places.stream()
                 .reduce(String::concat);
-        assertEquals(join.get(), __);
+        assertEquals(join.get(), "BelgradeZagrebSarajevoSkopjeLjubljanaPodgorica");
     }
 
     @Koan
@@ -65,14 +65,14 @@ public class AboutStreams {
         String join = places.stream()
                 .reduce((accumulated, cityName) -> accumulated + "\", \"" + cityName)
                 .get();
-        assertEquals(join, __);
+        assertEquals(join, "Belgrade\", \"Zagreb\", \"Sarajevo\", \"Skopje\", \"Ljubljana\", \"Podgorica");
     }
 
     @Koan
     public void stringJoin() {
         String join = places.stream()
                 .collect(Collectors.joining("\", \""));
-        assertEquals(join, __);
+        assertEquals(join, "Belgrade\", \"Zagreb\", \"Sarajevo\", \"Skopje\", \"Ljubljana\", \"Podgorica");
     }
 
     @Koan
@@ -81,7 +81,7 @@ public class AboutStreams {
                 .mapToInt(String::length)
                 .average();
         double averageLength = Math.round(averageLengthOptional.getAsDouble());
-        assertEquals(averageLength, __);
+        assertEquals(averageLength, 8d);
     }
 
     @Koan
@@ -89,7 +89,7 @@ public class AboutStreams {
         int lengthSum = places.parallelStream()
                 .mapToInt(String::length)
                 .sum();
-        assertEquals(lengthSum, __);
+        assertEquals(lengthSum, 46);
     }
 
     @Koan
@@ -99,23 +99,28 @@ public class AboutStreams {
                 .limit(3)
                 .skip(1)
                 .sum();
-        assertEquals(lengthSum_Limit_3_Skip_1, __);
+        assertEquals(lengthSum_Limit_3_Skip_1, 14);
+        // "Belgrade": 8, "Zagreb": 6, "Sarajevo": 8, "Skopje": 6, "Ljubljana": 9,
+        // "Podgorica": 9
+        // "Belgrade": 8, "Zagreb": 6, "Sarajevo": 8,
+        // "Zagreb": 6, "Sarajevo": 8
+        // 6 + 8 = 14
     }
 
     @Koan
     public void lazyEvaluation() {
         Stream stream = places.stream()
                 .filter(s -> {
-                    str = "hello";
+                    str = "hello"; // lazily loaded as only in mem when used
                     return s.startsWith("S");
                 });
-        assertEquals(str, __);
+        assertEquals(str, "");
     }
 
     @Koan
     public void sumRange() {
         int sum = IntStream.range(1, 4).sum();
-        assertEquals(sum, __);
+        assertEquals(sum, 6);
     }
 
     @Koan
@@ -123,6 +128,6 @@ public class AboutStreams {
         List<Integer> range = IntStream.range(1, 4)
                 .boxed()
                 .collect(Collectors.toList());
-        assertEquals(range, __);
+        assertEquals(range, Arrays.asList(1, 2, 3));
     }
 }
