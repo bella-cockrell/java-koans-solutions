@@ -13,22 +13,22 @@ public class AboutDiamondOperator {
 
     @Koan
     public void diamondOperator() {
-        String[] animals = {"Dog", "Cat", "Tiger", "Elephant", "Zebra"};
-        //Generic type of array list inferred - empty <> operator
+        String[] animals = { "Dog", "Cat", "Tiger", "Elephant", "Zebra" };
+        // Generic type of array list inferred - empty <> operator
         List<String> animalsList = new ArrayList<>(Arrays.asList(animals));
-        assertEquals(animalsList, __);
+        assertEquals(animalsList, Arrays.asList("Dog", "Cat", "Tiger", "Elephant", "Zebra"));
     }
 
     @Koan
     public void diamondOperatorInMethodCall() {
-        String[] animals = {"Dog", "Cat", "Tiger", "Elephant", "Zebra"};
-        //type of new ArrayList<>() inferred from method parameter
+        String[] animals = { "Dog", "Cat", "Tiger", "Elephant", "Zebra" };
+        // type of new ArrayList<>() inferred from method parameter
         List<String> animalsList = fill(new ArrayList<>());
-        assertEquals(animalsList, __);
+        assertEquals(animalsList, Arrays.asList("Dog", "Cat", "Tiger", "Elephant", "Zebra"));
     }
 
     private List<String> fill(List<String> list) {
-        String[] animals = {"Dog", "Cat", "Tiger", "Elephant", "Zebra"};
+        String[] animals = { "Dog", "Cat", "Tiger", "Elephant", "Zebra" };
         list.addAll(Arrays.asList(animals));
         return list;
     }
