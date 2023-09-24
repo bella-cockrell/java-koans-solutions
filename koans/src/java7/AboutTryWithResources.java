@@ -9,6 +9,11 @@ import static com.sandwich.util.Assert.assertEquals;
 
 public class AboutTryWithResources {
 
+    // A resource is an object that must be closed after the program is finished
+    // with it.
+    // The try-with-resources statement ensures that each resource is closed at the
+    // end of the statement.
+
     class AutoClosableResource implements AutoCloseable {
         public void foo() throws WorkException {
             throw new WorkException("Exception thrown while working");
@@ -34,33 +39,32 @@ public class AboutTryWithResources {
     @Koan
     public void lookMaNoClose() {
         String str = "first line"
-                + System.lineSeparator()
+                + System.lineSeparator() // it seems to raise IOException on this line?
                 + "second line";
         InputStream is = new ByteArrayInputStream(str.getBytes());
         String line;
         /* BufferedReader implementing @see java.lang.AutoCloseable interface */
-        try (BufferedReader br =
-                     new BufferedReader(
-                             new InputStreamReader(is))) {
+        try (BufferedReader br = new BufferedReader(
+                new InputStreamReader(is))) {
             line = br.readLine();
-            //br guaranteed to be closed
+            // br guaranteed to be closed
+            // br closes automatically after this readline?
         } catch (IOException e) {
             line = "error";
         }
-        assertEquals(line, __);
+        assertEquals(line, "first line");
     }
 
     @Koan
     public void lookMaNoCloseWithException() throws IOException {
         String line = "no need to close readers";
-        try (BufferedReader br =
-                     new BufferedReader(
-                             new FileReader("I do not exist!"))) {
+        try (BufferedReader br = new BufferedReader(
+                new FileReader("I do not exist!"))) {
             line = br.readLine();
         } catch (FileNotFoundException e) {
             line = "no more leaking!";
         }
-        assertEquals(line, __);
+        assertEquals(line, "no more leaking!");
     }
 
     @Koan
@@ -70,20 +74,18 @@ public class AboutTryWithResources {
                 + "second line";
         InputStream is = new ByteArrayInputStream(str.getBytes());
         String line;
-        //multiple resources in the same try declaration
-        try (BufferedReader br =
-                     new BufferedReader(
-                             new FileReader("I do not exist!"));
-             BufferedReader brFromString =
-                     new BufferedReader(
-                             new InputStreamReader(is))
-        ) {
+        // multiple resources in the same try declaration
+        try (BufferedReader br = new BufferedReader(
+                new FileReader("I do not exist!"));
+                // bad file
+                BufferedReader brFromString = new BufferedReader( // good file
+                        new InputStreamReader(is))) {
             line = br.readLine();
             line += brFromString.readLine();
         } catch (IOException e) {
             line = "error";
         }
-        assertEquals(line, __);
+        assertEquals(line, "error");
     }
 
     @Koan
@@ -96,13 +98,11 @@ public class AboutTryWithResources {
         } catch (CloseException e) {
             message += e.getMessage();
         }
-        assertEquals(message, __);
+        assertEquals(message, "Exception thrown while working Exception thrown while closing");
     }
 
-
     public void bar() throws CloseException, WorkException {
-        try (AutoClosableResource autoClosableResource =
-                     new AutoClosableResource()) {
+        try (AutoClosableResource autoClosableResource = new AutoClosableResource()) {
             autoClosableResource.foo();
         }
     }
