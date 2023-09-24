@@ -9,7 +9,7 @@ public class AboutStringsInSwitch {
 
     @Koan
     public void stringsInSwitchStatement() {
-        String[] animals = {"Dog", "Cat", "Tiger", "Elephant", "Zebra"};
+        String[] animals = { "Dog", "Cat", "Tiger", "Elephant", "Zebra" };
         String dangerous = null;
         String notDangerous = null;
         for (String animal : animals) {
@@ -23,8 +23,8 @@ public class AboutStringsInSwitch {
                     notDangerous = animal;
             }
         }
-        assertEquals(notDangerous, __);
-        assertEquals(dangerous, __);
+        assertEquals(notDangerous, "Zebra");
+        assertEquals(dangerous, "Tiger");
     }
 
 }
