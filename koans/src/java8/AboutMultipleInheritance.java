@@ -20,18 +20,22 @@ public class AboutMultipleInheritance {
     }
 
     class Minotaur implements Human, Bull {
-        //both interfaces implement same default method
-        //has to be overridden
+        // both interfaces implement same default method
+        // has to be overridden
+        // otherwise error: Duplicate default methods named sound with the parameters ()
+        // and ()
+        // are inherited from the types AboutMultipleInheritance.Bull and
+        // AboutMultipleInheritance.Human
         @Override
         public String sound() {
-            return Bull.super.sound();
+            return Bull.super.sound(); // opt for Bull sound
         }
     }
 
     @Koan
     public void multipleInheritance() {
         Minotaur minotaur = new Minotaur();
-        assertEquals(minotaur.sound(), __);
+        assertEquals(minotaur.sound(), "moo");
     }
 
 }
